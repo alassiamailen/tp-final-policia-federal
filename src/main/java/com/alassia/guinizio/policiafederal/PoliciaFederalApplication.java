@@ -8,6 +8,6 @@ public class PoliciaFederalApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PoliciaFederalApplication.class, args);
+        System.out.println("Hola Mundo! Como va todo?");
 	}
-
 }
