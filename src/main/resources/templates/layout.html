@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Policia Federal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestión Policial</h1>
+    </header>
+    <nav>
+        <a th:href="@{/}">🏠 Menú Principal</a>
+        <div style="float: right; color: white; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 1rem;">
+            <span th:if="${session.usuarioNombre}" style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="opacity: 0.9;">👤 Usuario: <strong th:text="${session.usuarioNombre}"></strong></span>
+                <span style="opacity: 0.8;">(<span th:text="${session.usuarioRol}"></span>)</span>
+                <span style="opacity: 0.6;">|</span>
+                <a th:href="@{/logout}" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 6px; transition: all 0.3s; background: rgba(255,255,255,0.1);">🚪 Cerrar Sesión</a>
+            </span>
+        </div>
+    </nav>
+    <div class="container">
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        <div th:replace="~{::content}">Contenido</div>
+    </div>
+    <footer>
+        <p>Creadores: <strong>Nicolas Guinzio</strong> y <strong>Mailen Alassia</strong></p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.85;">Año 2025 - Proyecto Final Programación 2</p>
+    </footer>
+</body>
+</html>

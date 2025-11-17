@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Crear Vigilante</h1>
+        <p style="color: #666; margin-bottom: 1rem;">Al crear un vigilante, se creará automáticamente su usuario asociado con el rol "Vigilante".</p>
+        
+        <form th:action="@{/crear-entidad/vigilante}" th:object="${vigilante}" method="post" style="max-width: 500px;">
+            <input type="hidden" th:if="${returnTo != null}" th:name="returnTo" th:value="${returnTo}">
+            
+            <h3 style="margin-top: 1rem; margin-bottom: 0.5rem;">Datos del Vigilante</h3>
+            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">El código se generará automáticamente (ej: VIG-001, VIG-002, etc.)</p>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="nombreApellido">Nombre y Apellido:</label>
+                <input type="text" id="nombreApellido" th:field="*{nombreApellido}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" th:field="*{edad}" required min="18" max="100" style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Datos del Usuario</h3>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>
+                    <input type="radio" name="opcionUsuario" value="existente" id="opcionExistente" onchange="toggleOpcionUsuario()" style="margin-right: 0.5rem;">
+                    Vincular a un usuario existente
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="opcionUsuario" value="nuevo" id="opcionNuevo" checked onchange="toggleOpcionUsuario()" style="margin-right: 0.5rem;">
+                    Crear nuevo usuario
+                </label>
+            </div>
+            
+            <div id="usuarioExistenteDiv" style="margin-bottom: 1rem; display: none;">
+                <label for="usuarioExistenteId">Usuario Vigilante Disponible:</label>
+                <select id="usuarioExistenteId" name="usuarioExistenteId" style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione un usuario</option>
+                    <option th:each="usuario : ${usuariosDisponibles}" th:value="${usuario.id}" 
+                            th:text="${usuario.nombreUsuario}"></option>
+                </select>
+                <div th:if="${#lists.isEmpty(usuariosDisponibles)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay usuarios con rol Vigilante disponibles sin vigilante asignado.</small>
+                </div>
+            </div>
+            
+            <div id="usuarioNuevoDiv" style="margin-bottom: 1rem;">
+                <div style="margin-bottom: 1rem;">
+                    <label for="nombreUsuario">Nombre de Usuario:</label>
+                    <input type="text" id="nombreUsuario" name="nombreUsuario" style="width: 100%; padding: 0.5rem;" 
+                           placeholder="Usuario para iniciar sesión">
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" style="width: 100%; padding: 0.5rem;">
+                </div>
+            </div>
+            
+            <script>
+                function toggleOpcionUsuario() {
+                    const opcionExistente = document.getElementById('opcionExistente').checked;
+                    const opcionNuevo = document.getElementById('opcionNuevo').checked;
+                    const usuarioExistenteDiv = document.getElementById('usuarioExistenteDiv');
+                    const usuarioNuevoDiv = document.getElementById('usuarioNuevoDiv');
+                    const usuarioExistenteId = document.getElementById('usuarioExistenteId');
+                    const nombreUsuario = document.getElementById('nombreUsuario');
+                    const password = document.getElementById('password');
+                    
+                    if (opcionExistente) {
+                        usuarioExistenteDiv.style.display = 'block';
+                        usuarioNuevoDiv.style.display = 'none';
+                        usuarioExistenteId.required = true;
+                        nombreUsuario.required = false;
+                        password.required = false;
+                    } else {
+                        usuarioExistenteDiv.style.display = 'none';
+                        usuarioNuevoDiv.style.display = 'block';
+                        usuarioExistenteId.required = false;
+                        nombreUsuario.required = true;
+                        password.required = true;
+                    }
+                }
+                
+                // Ejecutar al cargar la página
+                document.addEventListener('DOMContentLoaded', function() {
+                    toggleOpcionUsuario();
+                });
+            </script>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Crear Vigilante y Usuario</button>
+                <a th:href="${returnTo != null ? returnTo : '/crear-entidad'}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

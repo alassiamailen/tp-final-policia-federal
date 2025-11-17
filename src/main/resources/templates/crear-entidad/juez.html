@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Crear Juez</h1>
+        
+        <form th:action="@{/crear-entidad/juez}" th:object="${juez}" method="post" style="max-width: 500px;">
+            <input type="hidden" th:if="${returnTo != null}" th:name="returnTo" th:value="${returnTo}">
+            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">La clave interna del juzgado se generará automáticamente (ej: JZ-001, JZ-002, etc.)</p>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="nombreApellido">Nombre y Apellido:</label>
+                <input type="text" id="nombreApellido" th:field="*{nombreApellido}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="aniosDeServicio">Años de Servicio:</label>
+                <input type="number" id="aniosDeServicio" th:field="*{aniosDeServicio}" required min="0" style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Crear Juez</button>
+                <a th:href="${returnTo != null ? returnTo : '/crear-entidad'}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

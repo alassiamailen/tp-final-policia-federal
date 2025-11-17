@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Crear Asaltante</h1>
+        
+        <form th:action="@{/crear-entidad/asaltante}" th:object="${asaltante}" method="post" style="max-width: 500px;">
+            <input type="hidden" th:if="${returnTo != null}" th:name="returnTo" th:value="${returnTo}">
+            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">El código se generará automáticamente (ej: ASL-001, ASL-002, etc.)</p>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="nombreApellido">Nombre y Apellido:</label>
+                <input type="text" id="nombreApellido" th:field="*{nombreApellido}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="bandaCriminalId">Banda Criminal:</label>
+                <select id="bandaCriminalId" name="bandaCriminalId" style="width: 100%; padding: 0.5rem;">
+                    <option value="">Sin banda</option>
+                    <option th:each="banda : ${bandas}" th:value="${banda.id}" 
+                            th:text="'ID: ' + ${banda.numeroIdentificacion} + ' - Miembros: ' + ${banda.cantidadDeMiembros}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/banda-criminal?returnTo=/crear-entidad/asaltante}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nueva Banda Criminal
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(bandas)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay bandas criminales registradas. Puede crear una nueva o dejar sin banda.</small>
+                </div>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Crear Asaltante</button>
+                <a th:href="${returnTo != null ? returnTo : '/crear-entidad'}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

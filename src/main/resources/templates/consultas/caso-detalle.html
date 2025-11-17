@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Detalle del Caso</h1>
+        
+        <div style="background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <p><strong>ID del Caso:</strong> <span th:text="${caso.id}"></span></p>
+            <p><strong>Juez Asignado:</strong> <span th:text="${caso.juez.nombreApellido}"></span></p>
+            <p><strong>Años de Servicio del Juez:</strong> <span th:text="${caso.juez.aniosDeServicio}"></span></p>
+            <p><strong>Asaltante:</strong> <span th:text="${caso.condena.asaltante.nombreApellido}"></span></p>
+            <p><strong>Asalto ID:</strong> <span th:text="${caso.condena.asalto.id}"></span></p>
+            <p><strong>Fecha del Asalto:</strong> <span th:text="${#temporals.format(caso.condena.asalto.fecha, 'dd/MM/yyyy')}"></span></p>
+            <p><strong>Tiempo de Condena:</strong> <span th:text="${caso.condena.tiempoCondena}"></span> años</p>
+        </div>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas/casos}" class="btn btn-primary">Volver a Casos</a>
+        </div>
+    </div>
+</body>
+</html>
+

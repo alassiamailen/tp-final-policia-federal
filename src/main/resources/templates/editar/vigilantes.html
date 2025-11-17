@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Editar Vigilantes</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Edad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="vigilante : ${vigilantes}">
+                    <td th:text="${vigilante.id}"></td>
+                    <td th:text="${vigilante.nombreApellido}"></td>
+                    <td th:text="${vigilante.edad}"></td>
+                    <td>
+                        <a th:href="@{/editar/vigilante/{id}(id=${vigilante.id})}" class="btn btn-primary">Editar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(vigilantes)}">
+                    <td colspan="4" style="text-align: center;">No hay vigilantes registrados</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/editar}" class="btn btn-primary">Volver</a>
+        </div>
+    </div>
+</body>
+</html>
+

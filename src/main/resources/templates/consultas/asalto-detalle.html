@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Detalle del Asalto</h1>
+        
+        <div style="background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <p><strong>ID:</strong> <span th:text="${asalto.id}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#temporals.format(asalto.fecha, 'dd/MM/yyyy')}"></span></p>
+            <p><strong>Asaltante:</strong> 
+                <span th:if="${asalto.asaltante != null}" th:text="${asalto.asaltante.nombreApellido}"></span>
+                <span th:if="${asalto.asaltante == null}">No registrado</span>
+            </p>
+            <p><strong>Sucursal:</strong> <span th:text="${asalto.sucursal.nombre}"></span></p>
+            <p><strong>Banda Criminal:</strong> 
+                <span th:if="${asalto.bandaCriminal != null}" th:text="${asalto.bandaCriminal.numeroIdentificacion}"></span>
+                <span th:if="${asalto.bandaCriminal == null}">Sin banda</span>
+            </p>
+            <p><strong>Condenado:</strong> <span th:text="${asalto.condenado ? 'Sí' : 'No'}"></span></p>
+        </div>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas/asaltos}" class="btn btn-primary">Volver a Asaltos</a>
+        </div>
+    </div>
+</body>
+</html>
+

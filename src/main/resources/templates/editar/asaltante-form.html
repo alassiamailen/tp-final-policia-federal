@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1 style="color: #1a237e;">Editar Asaltante</h1>
+        
+        <form th:action="@{/editar/asaltante/{id}(id=${asaltante.id})}" th:object="${asaltante}" method="post" style="max-width: 600px;">
+            <div class="form-group">
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" th:field="*{codigo}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nombreApellido">Nombre y Apellido:</label>
+                <input type="text" id="nombreApellido" th:field="*{nombreApellido}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="bandaCriminalId">Banda Criminal:</label>
+                <select id="bandaCriminalId" name="bandaCriminalId">
+                    <option value="">Sin banda</option>
+                    <option th:each="banda : ${bandas}" 
+                            th:value="${banda.id}"
+                            th:selected="${asaltante.bandaCriminal != null && asaltante.bandaCriminal.id == banda.id}"
+                            th:text="'ID: ' + ${banda.numeroIdentificacion} + ' - Miembros: ' + ${banda.cantidadDeMiembros}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/banda-criminal?returnTo=/editar/asaltante/{id}(id=${asaltante.id})}" class="btn btn-primary btn-sm">
+                        + Crear Nueva Banda Criminal
+                    </a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-success">Actualizar</button>
+                <a th:href="@{/consultas/asaltantes}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

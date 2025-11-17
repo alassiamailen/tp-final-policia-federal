@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Lista de Asaltos</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Asaltante</th>
+                    <th>Código</th>
+                    <th>Sucursal</th>
+                    <th>Banda Criminal</th>
+                    <th>Condenado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="asalto : ${asaltos}">
+                    <td th:text="${#temporals.format(asalto.fecha, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${asalto.asaltante?.nombreApellido ?: 'No registrado'}"></td>
+                    <td>
+                        <span th:if="${asalto.asaltante != null && asalto.asaltante.codigo != null}" class="badge badge-danger" th:text="${asalto.asaltante.codigo}"></span>
+                        <span th:if="${asalto.asaltante != null && asalto.asaltante.codigo == null}" class="badge badge-warning">Sin código</span>
+                        <span th:if="${asalto.asaltante == null}">-</span>
+                    </td>
+                    <td>
+                        <span th:text="${asalto.sucursal.nombre}"></span>
+                        <span th:if="${asalto.sucursal.codigo != null}" class="badge badge-secondary" th:text="'(' + ${asalto.sucursal.codigo} + ')'"></span>
+                    </td>
+                    <td>
+                        <span th:if="${asalto.bandaCriminal != null}" class="badge badge-warning" th:text="'ID: ' + ${asalto.bandaCriminal.numeroIdentificacion}"></span>
+                        <span th:if="${asalto.bandaCriminal == null}" class="badge badge-primary">Sin banda</span>
+                    </td>
+                    <td>
+                        <span th:if="${asalto.condenado}" class="badge badge-danger">Sí</span>
+                        <span th:if="${!asalto.condenado}" class="badge badge-success">No</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/consultas/asaltos/{id}(id=${asalto.id})}" class="btn btn-primary">Ver Detalle</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(asaltos)}">
+                    <td colspan="7" style="text-align: center;">No hay asaltos registrados</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

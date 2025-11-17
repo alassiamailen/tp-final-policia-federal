@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Contratar Vigilante</h1>
+        
+        <form th:action="@{/contratos/crear}" method="post" style="max-width: 500px;">
+            <div style="margin-bottom: 1rem;">
+                <label for="sucursalId">Sucursal:</label>
+                <select id="sucursalId" name="sucursal.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione una sucursal</option>
+                    <option th:each="sucursal : ${sucursales}" th:value="${sucursal.id}" 
+                            th:text="${sucursal.nombre + ' - ' + sucursal.entidadBancaria.nombre}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/sucursal?returnTo=/contratos/crear}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nueva Sucursal
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(sucursales)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay sucursales registradas. Debe crear una antes de contratar un vigilante.</small>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="vigilanteId">Vigilante:</label>
+                <select id="vigilanteId" name="vigilante.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione un vigilante</option>
+                    <option th:each="vigilante : ${vigilantes}" th:value="${vigilante.id}" 
+                            th:text="${vigilante.nombreApellido + ' (Edad: ' + vigilante.edad + ')'}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/vigilante?returnTo=/contratos/crear}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nuevo Vigilante
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(vigilantes)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay vigilantes registrados. Debe crear uno antes de contratar.</small>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="fechaInicio">Fecha Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" required 
+                       th:min="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}"
+                       style="width: 100%; padding: 0.5rem;"
+                       onchange="actualizarFechaFinMin()">
+                <small style="color: #666; display: block; margin-top: 0.25rem;">La fecha de inicio no puede ser anterior al día de hoy.</small>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="fechaFin">Fecha Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" required 
+                       th:min="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}"
+                       style="width: 100%; padding: 0.5rem;">
+                <small style="color: #666; display: block; margin-top: 0.25rem;">La fecha de fin debe ser posterior a la fecha de inicio.</small>
+            </div>
+            
+            <script>
+                function actualizarFechaFinMin() {
+                    const fechaInicio = document.getElementById('fechaInicio');
+                    const fechaFin = document.getElementById('fechaFin');
+                    
+                    if (fechaInicio.value) {
+                        // Establecer la fecha mínima de fin como el día siguiente a la fecha de inicio
+                        const fechaInicioDate = new Date(fechaInicio.value);
+                        fechaInicioDate.setDate(fechaInicioDate.getDate() + 1);
+                        const fechaMinFin = fechaInicioDate.toISOString().split('T')[0];
+                        fechaFin.min = fechaMinFin;
+                        
+                        // Si la fecha de fin actual es anterior o igual a la fecha de inicio, actualizarla
+                        if (fechaFin.value && fechaFin.value <= fechaInicio.value) {
+                            fechaFin.value = fechaMinFin;
+                        }
+                    } else {
+                        // Si no hay fecha de inicio, la fecha mínima de fin es mañana
+                        const hoy = new Date();
+                        hoy.setDate(hoy.getDate() + 1);
+                        fechaFin.min = hoy.toISOString().split('T')[0];
+                    }
+                }
+                
+                // Ejecutar al cargar la página
+                document.addEventListener('DOMContentLoaded', function() {
+                    actualizarFechaFinMin();
+                });
+            </script>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>
+                    <input type="checkbox" name="portarArma" value="true">
+                    Portar Arma
+                </label>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Crear Contrato</button>
+                <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

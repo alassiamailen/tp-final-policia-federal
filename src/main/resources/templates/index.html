@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Policia Federal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestión Policial</h1>
+    </header>
+    <nav>
+        <a th:href="@{/}">🏠 Menú Principal</a>
+        <div style="float: right; color: white; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 1rem;">
+            <span th:if="${session.usuarioNombre}" style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="opacity: 0.9;">👤 Usuario: <strong th:text="${session.usuarioNombre}"></strong></span>
+                <span style="opacity: 0.8;">(<span th:text="${session.usuarioRol}"></span>)</span>
+                <span style="opacity: 0.6;">|</span>
+                <a th:href="@{/logout}" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 6px; transition: all 0.3s; background: rgba(255,255,255,0.1);">🚪 Cerrar Sesión</a>
+            </span>
+        </div>
+    </nav>
+    <div class="container">
+        <div style="background: linear-gradient(135deg, rgba(26, 35, 126, 0.1) 0%, rgba(57, 73, 171, 0.1) 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); animation: fadeIn 0.6s ease-out;">
+            <h1 style="margin-bottom: 0.5rem;">👋 Bienvenido, <span style="color: #1a237e; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);" th:text="${usuario.nombreUsuario}"></span></h1>
+            <p style="font-size: 1.1rem; color: #666; margin: 0;">Rol: <strong style="color: #283593; font-size: 1.2rem;" th:text="${usuario.rol.nombre}"></strong></p>
+        </div>
+        
+        <h2>📋 Menú Principal</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            
+            <!-- Consultar Datos -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).CONSULTAR_DATOS_DE_OTRAS_ENTIDADES)}">
+                <div class="card-icon">🔍</div>
+                <h3>Consultar Datos</h3>
+                <p class="card-description">Consulta información de entidades, sucursales, vigilantes y más</p>
+                <a th:href="@{/consultas}" class="btn btn-primary">Ver Consultas</a>
+            </div>
+            
+            <!-- Consultar Mis Datos (Vigilante) -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).CONSULTAR_MIS_DATOS_VIGILANTE)}">
+                <div class="card-icon">👤</div>
+                <h3>Mis Datos</h3>
+                <p class="card-description">Visualiza tu información personal y contratos activos</p>
+                <a th:href="@{/vigilante/mis-datos}" class="btn btn-primary">Ver Mis Datos</a>
+            </div>
+            
+            <!-- Crear Entidad -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).CREAR_ENTIDAD)}">
+                <div class="card-icon">➕</div>
+                <h3>Crear Entidad</h3>
+                <p class="card-description">Registra nuevas entidades bancarias, sucursales, vigilantes y más</p>
+                <a th:href="@{/crear-entidad}" class="btn btn-success">Crear Entidad</a>
+            </div>
+            
+            <!-- Contratar Vigilante -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).CONTRATAR_VIGILANTE)}">
+                <div class="card-icon">🤝</div>
+                <h3>Contratar Vigilante</h3>
+                <p class="card-description">Asigna vigilantes a sucursales bancarias</p>
+                <a th:href="@{/contratos/crear}" class="btn btn-success">Nuevo Contrato</a>
+            </div>
+            
+            <!-- Cargar Detenido -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).CARGAR_DETENIDO)}">
+                <div class="card-icon">🚨</div>
+                <h3>Cargar Detenido</h3>
+                <p class="card-description">Registra asaltos y detenciones realizadas</p>
+                <a th:href="@{/detenidos/cargar}" class="btn btn-success">Registrar Asalto</a>
+            </div>
+            
+            <!-- Abrir Caso -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).ABRIR_CASO)}">
+                <div class="card-icon">⚖️</div>
+                <h3>Abrir Caso</h3>
+                <p class="card-description">Inicia un nuevo caso judicial y asigna un juez</p>
+                <a th:href="@{/casos/abrir}" class="btn btn-success">Nuevo Caso</a>
+            </div>
+            
+            <!-- Crear Usuarios -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).CREAR_USUARIOS)}">
+                <div class="card-icon">👥</div>
+                <h3>Gestión de Usuarios</h3>
+                <p class="card-description">Administra usuarios, roles y permisos del sistema</p>
+                <a th:href="@{/usuarios}" class="btn btn-primary">Ver Usuarios</a>
+            </div>
+            
+            <!-- Editar Datos -->
+            <div class="menu-card" th:if="${#lists.contains(permisos, T(com.PoliciaFederal.Policia_federal.model.Permiso).EDITAR_DATOS)}">
+                <div class="card-icon">✏️</div>
+                <h3>Editar Datos</h3>
+                <p class="card-description">Modifica información de entidades y registros existentes</p>
+                <a th:href="@{/editar}" class="btn btn-primary">Editar</a>
+            </div>
+            
+        </div>
+    </div>
+    <footer>
+        <p>Creadores: <strong>Nicolas Guinzio</strong> y <strong>Mailen Alassia</strong></p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.85;">Año 2025 - Proyecto Final Programación 2</p>
+    </footer>
+</body>
+</html>

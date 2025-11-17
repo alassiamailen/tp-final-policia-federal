@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Editar Entidad Bancaria</h1>
+        
+        <form th:action="@{/entidades/editar/{id}(id=${entidad.id})}" th:object="${entidad}" method="post">
+            <div class="form-group">
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" th:field="*{codigo}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="domicilio">Domicilio de la Central:</label>
+                <input type="text" id="domicilio" th:field="*{domicilio}" required>
+            </div>
+            
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            <a th:href="@{/entidades}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

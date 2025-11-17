@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Consultas del Sistema</h1>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+            
+            <div class="menu-card">
+                <h3>Información Judicial</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/jueces}" class="btn btn-primary" style="width: 100%;">Jueces</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/condenas}" class="btn btn-primary" style="width: 100%;">Condenas</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/asaltantes}" class="btn btn-primary" style="width: 100%;">Asaltantes</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/asaltos}" class="btn btn-primary" style="width: 100%;">Asaltos/Delitos</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/casos}" class="btn btn-primary" style="width: 100%;">Casos</a></li>
+                </ul>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Seguridad Bancaria</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/vigilantes}" class="btn btn-primary" style="width: 100%;">Vigilantes</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/contratos}" class="btn btn-primary" style="width: 100%;">Contratos</a></li>
+                </ul>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Entidades Financieras</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/entidades-bancarias}" class="btn btn-primary" style="width: 100%;">Entidades Bancarias</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/sucursales}" class="btn btn-primary" style="width: 100%;">Sucursales</a></li>
+                </ul>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Administración del Sistema</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/usuarios-sistema}" class="btn btn-primary" style="width: 100%;">Usuarios</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/roles-sistema}" class="btn btn-primary" style="width: 100%;">Roles</a></li>
+                    <li style="margin: 0.5rem 0;"><a th:href="@{/consultas/permisos}" class="btn btn-primary" style="width: 100%;">Permisos</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <a th:href="@{/}" class="btn btn-primary">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>
+

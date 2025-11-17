@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Lista de Entidades Bancarias</h1>
+        
+        <a th:if="${puedeCrear}" th:href="@{/entidades/crear}" class="btn btn-success">Crear Nueva Entidad</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Domicilio Central</th>
+                    <th th:if="${puedeEditar}">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entidad : ${entidades}">
+                    <td>
+                        <span th:if="${entidad.codigo != null}" class="badge badge-primary" th:text="${entidad.codigo}"></span>
+                        <span th:if="${entidad.codigo == null}" class="badge badge-warning">Sin código</span>
+                    </td>
+                    <td th:text="${entidad.nombre}"></td>
+                    <td th:text="${entidad.domicilio}"></td>
+                    <td th:if="${puedeEditar}">
+                        <a th:href="@{/entidades/editar/{id}(id=${entidad.id})}" class="btn btn-primary">Editar</a>
+                        <a th:href="@{/entidades/eliminar/{id}(id=${entidad.id})}" 
+                           class="btn btn-danger"
+                           onclick="return confirm('¿Está seguro de eliminar esta entidad?')">Eliminar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(entidades)}">
+                    <td th:attr="colspan=${puedeEditar ? 4 : 3}" style="text-align: center;">No hay entidades bancarias registradas</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

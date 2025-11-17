@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Lista de Entidades Bancarias</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Domicilio Central</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entidad : ${entidades}">
+                    <td>
+                        <span th:if="${entidad.codigo != null}" class="badge badge-primary" th:text="${entidad.codigo}"></span>
+                        <span th:if="${entidad.codigo == null}" class="badge badge-warning">Sin código</span>
+                    </td>
+                    <td th:text="${entidad.nombre}"></td>
+                    <td th:text="${entidad.domicilio}"></td>
+                    <td>
+                        <a th:href="@{/consultas/entidades-bancarias/{id}(id=${entidad.id})}" class="btn btn-primary">Ver Detalle</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(entidades)}">
+                    <td colspan="4" style="text-align: center;">No hay entidades bancarias registradas</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

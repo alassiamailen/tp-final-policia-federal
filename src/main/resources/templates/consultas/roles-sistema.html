@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Roles del Sistema</h1>
+        
+        <div th:each="rol : ${roles}" style="background-color: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h3 th:text="${rol.nombre}"></h3>
+            <p><strong>Permisos:</strong></p>
+            <ul>
+                <li th:each="permiso : ${rol.permisos}" th:text="${permiso.descripcion}"></li>
+            </ul>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(roles)}" style="text-align: center; padding: 2rem;">
+            <p>No hay roles registrados</p>
+        </div>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

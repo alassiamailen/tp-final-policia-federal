@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Editar Datos</h1>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            <div class="menu-card">
+                <h3>Juez</h3>
+                <a th:href="@{/editar/juez}" class="btn btn-primary">Editar Jueces</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Vigilante</h3>
+                <a th:href="@{/editar/vigilante}" class="btn btn-primary">Editar Vigilantes</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Entidad Bancaria</h3>
+                <a th:href="@{/editar/entidad-bancaria}" class="btn btn-primary">Editar Entidades</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Sucursal</h3>
+                <a th:href="@{/editar/sucursal}" class="btn btn-primary">Editar Sucursales</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <a th:href="@{/}" class="btn btn-primary">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>
+

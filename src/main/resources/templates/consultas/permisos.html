@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Permisos del Sistema</h1>
+        
+        <div style="background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <ul style="list-style: none; padding: 0;">
+                <li th:each="permiso : ${permisos}" 
+                    style="padding: 0.5rem; border-bottom: 1px solid #eee;"
+                    th:if="${permiso != T(com.PoliciaFederal.Policia_federal.model.Permiso).CERRAR_SESION and permiso != T(com.PoliciaFederal.Policia_federal.model.Permiso).SALIR}">
+                    <strong th:text="${permiso.name()}"></strong>: 
+                    <span th:text="${permiso.descripcion}"></span>
+                </li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

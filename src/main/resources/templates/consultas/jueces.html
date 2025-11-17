@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h1 style="color: #1a237e; margin: 0;">Lista de Jueces</h1>
+            <a th:if="${puedeEditar}" th:href="@{/editar/juez}" class="btn btn-success">
+                + Crear Nuevo Juez
+            </a>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Clave Juzgado</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Años de Servicio</th>
+                    <th>Casos Asignados</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="juez : ${jueces}">
+                    <td>
+                        <span th:if="${juez.claveInternaJuzgado != null}" class="badge badge-primary" th:text="${juez.claveInternaJuzgado}"></span>
+                        <span th:if="${juez.claveInternaJuzgado == null}" class="badge badge-warning">Sin clave</span>
+                    </td>
+                    <td th:text="${juez.nombreApellido}"></td>
+                    <td th:text="${juez.aniosDeServicio}"></td>
+                    <td>
+                        <span class="badge badge-primary" th:text="${juez.casosAsignados.size()} + ' casos'"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/consultas/jueces/{id}(id=${juez.id})}" class="btn btn-primary btn-sm">Ver Detalle</a>
+                        <a th:if="${puedeEditar}" th:href="@{/editar/juez/{id}(id=${juez.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(jueces)}">
+                    <td colspan="5" style="text-align: center; padding: 2rem; color: #666;">
+                        <p>No hay jueces registrados</p>
+                        <a th:if="${puedeEditar}" th:href="@{/crear-entidad/juez}" class="btn btn-success" style="margin-top: 1rem;">Crear Primer Juez</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1.5rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">← Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

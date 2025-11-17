@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Crear Rol Personalizado</h1>
+        
+        <form th:action="@{/usuarios/crear-rol}" method="post" style="max-width: 600px;">
+            <div style="margin-bottom: 1.5rem;">
+                <h3>Información del Rol</h3>
+                <div style="margin-bottom: 1rem;">
+                    <label for="nombreRol">Nombre del Rol:</label>
+                    <input type="text" id="nombreRol" name="nombreRol" required 
+                           style="width: 100%; padding: 0.5rem;" 
+                           placeholder="Ej: Supervisor, Analista, etc.">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <h3>Seleccionar Permisos</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                    Seleccione los permisos que tendrá este rol. Los permisos "Cerrar sesión" y "Salir" se agregarán automáticamente.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.5rem;">
+                    <div th:each="permiso : ${permisosDisponibles}" style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" name="permisosSeleccionados" 
+                                   th:value="${permiso.name()}" 
+                                   style="margin-right: 0.5rem;">
+                            <span th:text="${permiso.descripcion}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background-color: #e7f3ff; border-radius: 4px;">
+                <h3>Crear Usuario con este Rol</h3>
+                <div style="margin-bottom: 1rem;">
+                    <label for="nombreUsuario">Nombre de Usuario:</label>
+                    <input type="text" id="nombreUsuario" name="nombreUsuario" required 
+                           style="width: 100%; padding: 0.5rem;">
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required 
+                           style="width: 100%; padding: 0.5rem;">
+                </div>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Crear Rol y Usuario</button>
+                <a th:href="@{/usuarios/crear}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

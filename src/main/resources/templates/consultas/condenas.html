@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Lista de Condenas</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Asaltante</th>
+                    <th>Código</th>
+                    <th>Fecha Asalto</th>
+                    <th>Fue Condenado</th>
+                    <th>Tiempo de Condena (años)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="condena : ${condenas}">
+                    <td th:text="${condena.asaltante.nombreApellido}"></td>
+                    <td>
+                        <span th:if="${condena.asaltante.codigo != null}" class="badge badge-danger" th:text="${condena.asaltante.codigo}"></span>
+                        <span th:if="${condena.asaltante.codigo == null}" class="badge badge-warning">Sin código</span>
+                    </td>
+                    <td th:text="${#temporals.format(condena.asalto.fecha, 'dd/MM/yyyy')}"></td>
+                    <td>
+                        <span th:if="${condena.fueCondenado}" class="badge badge-danger">Sí</span>
+                        <span th:if="${!condena.fueCondenado}" class="badge badge-success">No</span>
+                    </td>
+                    <td>
+                        <span th:if="${condena.fueCondenado && condena.tiempoCondena != null}" class="badge badge-warning" th:text="${condena.tiempoCondena} + ' años'"></span>
+                        <span th:if="${!condena.fueCondenado || condena.tiempoCondena == null}">-</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(condenas)}">
+                    <td colspan="5" style="text-align: center;">No hay condenas registradas</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

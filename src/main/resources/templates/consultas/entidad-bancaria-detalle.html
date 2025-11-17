@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Detalle de la Entidad Bancaria</h1>
+        
+        <div class="detail-card">
+            <div class="info-section">
+                <p><strong>Código:</strong> 
+                    <span th:if="${entidad.codigo != null}" class="badge badge-primary" th:text="${entidad.codigo}"></span>
+                    <span th:if="${entidad.codigo == null}" class="badge badge-warning">Sin código asignado</span>
+                </p>
+                <p><strong>Nombre:</strong> <span th:text="${entidad.nombre}"></span></p>
+                <p><strong>Domicilio de la Central:</strong> <span th:text="${entidad.domicilio}"></span></p>
+            </div>
+            
+            <h3>🏦 Sucursales</h3>
+            <div th:if="${!entidad.sucursales.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Domicilio</th>
+                            <th>Empleados</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sucursal : ${entidad.sucursales}">
+                            <td>
+                                <span th:if="${sucursal.codigo != null}" class="badge badge-info" th:text="${sucursal.codigo}"></span>
+                                <span th:if="${sucursal.codigo == null}" class="badge badge-warning">Sin código</span>
+                            </td>
+                            <td th:text="${sucursal.nombre}"></td>
+                            <td th:text="${sucursal.domicilio}"></td>
+                            <td><span class="badge badge-primary" th:text="${sucursal.cantidadDeEmpleados}"></span></td>
+                            <td>
+                                <a th:href="@{/consultas/sucursales/{id}(id=${sucursal.id})}" class="btn btn-info btn-sm">Ver Detalle</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${entidad.sucursales.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">Sin sucursales registradas</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas/entidades-bancarias}" class="btn btn-primary">Volver a Entidades Bancarias</a>
+        </div>
+    </div>
+</body>
+</html>
+

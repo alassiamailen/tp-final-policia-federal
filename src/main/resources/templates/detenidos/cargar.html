@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Cargar Detenido (Registrar Asalto)</h1>
+        
+        <form th:action="@{/detenidos/cargar}" method="post" style="max-width: 500px;">
+            <div style="margin-bottom: 1rem;">
+                <label for="asaltanteId">Asaltante:</label>
+                <select id="asaltanteId" name="asaltante.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione un asaltante</option>
+                    <option th:each="asaltante : ${asaltantes}" th:value="${asaltante.id}" 
+                            th:text="${(asaltante.codigo != null ? asaltante.codigo + ' - ' : 'Sin código - ') + asaltante.nombreApellido}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/asaltante?returnTo=/detenidos/cargar}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nuevo Asaltante
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(asaltantes)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay asaltantes registrados. Debe crear uno antes de registrar un asalto.</small>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="sucursalId">Sucursal:</label>
+                <select id="sucursalId" name="sucursal.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione una sucursal</option>
+                    <option th:each="sucursal : ${sucursales}" th:value="${sucursal.id}" 
+                            th:text="${sucursal.nombre + ' - ' + sucursal.entidadBancaria.nombre}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/sucursal?returnTo=/detenidos/cargar}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nueva Sucursal
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(sucursales)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay sucursales registradas. Debe crear una antes de registrar un asalto.</small>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="fecha">Fecha del Asalto:</label>
+                <input type="date" id="fecha" name="fecha" required 
+                       th:max="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}"
+                       style="width: 100%; padding: 0.5rem;">
+                <small style="color: #666; display: block; margin-top: 0.25rem;">La fecha del asalto no puede ser futura. Debe ser la fecha actual o una fecha pasada.</small>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Registrar Asalto</button>
+                <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

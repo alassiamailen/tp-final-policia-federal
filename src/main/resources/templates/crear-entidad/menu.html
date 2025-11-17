@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Crear Entidad</h1>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            <div class="menu-card">
+                <h3>Juez</h3>
+                <a th:href="@{/crear-entidad/juez}" class="btn btn-success">Crear Juez</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Asaltante</h3>
+                <a th:href="@{/crear-entidad/asaltante}" class="btn btn-success">Crear Asaltante</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Vigilante</h3>
+                <a th:href="@{/crear-entidad/vigilante}" class="btn btn-success">Crear Vigilante</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Entidad Bancaria</h3>
+                <a th:href="@{/crear-entidad/entidad-bancaria}" class="btn btn-success">Crear Entidad</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Sucursal</h3>
+                <a th:href="@{/crear-entidad/sucursal}" class="btn btn-success">Crear Sucursal</a>
+            </div>
+            
+            <div class="menu-card">
+                <h3>Banda Criminal</h3>
+                <a th:href="@{/crear-entidad/banda-criminal}" class="btn btn-success">Crear Banda</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <a th:href="@{/}" class="btn btn-primary">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>
+

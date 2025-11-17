@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Editar Jueces</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre y Apellido</th>
+                    <th>Años de Servicio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="juez : ${jueces}">
+                    <td th:text="${juez.id}"></td>
+                    <td th:text="${juez.nombreApellido}"></td>
+                    <td th:text="${juez.aniosDeServicio}"></td>
+                    <td>
+                        <a th:href="@{/editar/juez/{id}(id=${juez.id})}" class="btn btn-primary">Editar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(jueces)}">
+                    <td colspan="4" style="text-align: center;">No hay jueces registrados</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/editar}" class="btn btn-primary">Volver</a>
+        </div>
+    </div>
+</body>
+</html>
+

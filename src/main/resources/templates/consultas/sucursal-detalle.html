@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h1 style="color: #1a237e; margin: 0;">Detalle de la Sucursal</h1>
+            <div>
+                <a th:if="${puedeEditar}" th:href="@{/editar/sucursal/{id}(id=${sucursal.id})}" class="btn btn-warning">✏️ Editar</a>
+                <a th:href="@{/consultas/sucursales}" class="btn btn-primary">← Volver</a>
+            </div>
+        </div>
+        
+        <div class="detail-card">
+            <div class="info-section">
+                <p><strong>Código:</strong> 
+                    <span th:if="${sucursal.codigo != null}" class="badge badge-info" th:text="${sucursal.codigo}"></span>
+                    <span th:if="${sucursal.codigo == null}" class="badge badge-warning">Sin código asignado</span>
+                </p>
+                <p><strong>Nombre:</strong> <span th:text="${sucursal.nombre}"></span></p>
+                <p><strong>Domicilio:</strong> <span th:text="${sucursal.domicilio}"></span></p>
+                <p><strong>Entidad Bancaria:</strong> 
+                    <span class="badge badge-primary" th:text="${sucursal.entidadBancaria.nombre}"></span>
+                    <span th:if="${sucursal.entidadBancaria.codigo != null}" class="badge badge-secondary" th:text="'(' + ${sucursal.entidadBancaria.codigo} + ')'"></span>
+                </p>
+                <p><strong>Cantidad de Empleados:</strong> <span class="badge badge-primary" th:text="${sucursal.cantidadDeEmpleados}"></span></p>
+            </div>
+            
+            <h3>👮 Contratos de Vigilantes</h3>
+            <div th:if="${!sucursal.contratos.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Vigilante</th>
+                            <th>Código</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Porta Arma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="contrato : ${sucursal.contratos}">
+                            <td th:text="${contrato.vigilante.nombreApellido}"></td>
+                            <td>
+                                <span th:if="${contrato.vigilante.codigo != null}" class="badge badge-success" th:text="${contrato.vigilante.codigo}"></span>
+                                <span th:if="${contrato.vigilante.codigo == null}" class="badge badge-warning">Sin código</span>
+                            </td>
+                            <td th:text="${#temporals.format(contrato.fechaInicio, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${#temporals.format(contrato.fechaFin, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <span th:if="${contrato.portarArma}" class="badge badge-danger">Sí</span>
+                                <span th:if="${!contrato.portarArma}" class="badge badge-success">No</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${sucursal.contratos.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">Sin contratos asignados</p>
+            </div>
+            
+            <h3>🔫 Asaltos Registrados</h3>
+            <div th:if="${!sucursal.asaltos.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Asaltante</th>
+                            <th>Código</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="asalto : ${sucursal.asaltos}">
+                            <td th:text="${#temporals.format(asalto.fecha, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${asalto.asaltante?.nombreApellido ?: 'N/A'}"></td>
+                            <td>
+                                <span th:if="${asalto.asaltante != null && asalto.asaltante.codigo != null}" class="badge badge-danger" th:text="${asalto.asaltante.codigo}"></span>
+                                <span th:if="${asalto.asaltante != null && asalto.asaltante.codigo == null}" class="badge badge-warning">Sin código</span>
+                                <span th:if="${asalto.asaltante == null}">-</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/consultas/asaltos/{id}(id=${asalto.id})}" class="btn btn-info btn-sm">Ver Detalle</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${sucursal.asaltos.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">Sin asaltos registrados</p>
+            </div>
+        </div>
+        
+        <div th:if="${puedeEditar || puedeContratar}" class="action-menu">
+            <h3>🔗 Relacionar con otras entidades</h3>
+            <div class="action-buttons">
+                <a th:if="${puedeContratar}" th:href="@{/contratos/crear}" class="btn btn-success">+ Contratar Vigilante</a>
+                <a th:if="${puedeCargarDetenido}" th:href="@{/detenidos/cargar}" class="btn btn-danger">+ Registrar Asalto</a>
+                <a th:if="${puedeEditar}" th:href="@{/crear-entidad/sucursal}" class="btn btn-primary">+ Crear Otra Sucursal</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

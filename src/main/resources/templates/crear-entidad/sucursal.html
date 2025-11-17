@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Crear Sucursal</h1>
+        
+        <form th:action="@{/crear-entidad/sucursal}" th:object="${sucursal}" method="post" style="max-width: 500px;">
+            <input type="hidden" th:if="${returnTo != null}" th:name="returnTo" th:value="${returnTo}">
+            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">El código se generará automáticamente (ej: SUC-001, SUC-002, etc.)</p>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="domicilio">Domicilio:</label>
+                <input type="text" id="domicilio" th:field="*{domicilio}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="cantidadDeEmpleados">Cantidad de Empleados:</label>
+                <input type="number" id="cantidadDeEmpleados" th:field="*{cantidadDeEmpleados}" required min="1" style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="entidadBancariaId">Entidad Bancaria:</label>
+                <select id="entidadBancariaId" name="entidadBancaria.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione una entidad</option>
+                    <option th:each="entidad : ${entidades}" th:value="${entidad.id}" 
+                            th:text="${entidad.nombre + ' - ' + entidad.domicilio}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/entidad-bancaria?returnTo=/crear-entidad/sucursal}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nueva Entidad Bancaria
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(entidades)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay entidades bancarias registradas. Debe crear una antes de crear una sucursal.</small>
+                </div>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Crear Sucursal</button>
+                <a th:href="${returnTo != null ? returnTo : '/crear-entidad'}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

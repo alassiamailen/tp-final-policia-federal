@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Lista de Casos</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Juez</th>
+                    <th>Clave Juzgado</th>
+                    <th>Asaltante</th>
+                    <th>Código</th>
+                    <th>Fue Condenado</th>
+                    <th>Tiempo Condena</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="caso : ${casos}">
+                    <td th:text="${caso.juez.nombreApellido}"></td>
+                    <td>
+                        <span th:if="${caso.juez.claveInternaJuzgado != null}" class="badge badge-primary" th:text="${caso.juez.claveInternaJuzgado}"></span>
+                        <span th:if="${caso.juez.claveInternaJuzgado == null}" class="badge badge-warning">Sin clave</span>
+                    </td>
+                    <td th:text="${caso.condena.asaltante.nombreApellido}"></td>
+                    <td>
+                        <span th:if="${caso.condena.asaltante.codigo != null}" class="badge badge-danger" th:text="${caso.condena.asaltante.codigo}"></span>
+                        <span th:if="${caso.condena.asaltante.codigo == null}" class="badge badge-warning">Sin código</span>
+                    </td>
+                    <td>
+                        <span th:if="${caso.condena.fueCondenado}" class="badge badge-danger">Sí</span>
+                        <span th:if="${!caso.condena.fueCondenado}" class="badge badge-success">No</span>
+                    </td>
+                    <td>
+                        <span th:if="${caso.condena.fueCondenado && caso.condena.tiempoCondena != null}" class="badge badge-warning" th:text="${caso.condena.tiempoCondena} + ' años'"></span>
+                        <span th:if="${!caso.condena.fueCondenado || caso.condena.tiempoCondena == null}">-</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/consultas/casos/{id}(id=${caso.id})}" class="btn btn-primary">Ver Detalle</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(casos)}">
+                    <td colspan="7" style="text-align: center;">No hay casos registrados</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/consultas}" class="btn btn-primary">Volver a Consultas</a>
+        </div>
+    </div>
+</body>
+</html>
+

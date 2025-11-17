@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Editar Sucursales</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Domicilio</th>
+                    <th>Entidad Bancaria</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="sucursal : ${sucursales}">
+                    <td th:text="${sucursal.id}"></td>
+                    <td th:text="${sucursal.nombre}"></td>
+                    <td th:text="${sucursal.domicilio}"></td>
+                    <td th:text="${sucursal.entidadBancaria.nombre}"></td>
+                    <td>
+                        <a th:href="@{/editar/sucursal/{id}(id=${sucursal.id})}" class="btn btn-primary">Editar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(sucursales)}">
+                    <td colspan="5" style="text-align: center;">No hay sucursales registradas</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 1rem;">
+            <a th:href="@{/editar}" class="btn btn-primary">Volver</a>
+        </div>
+    </div>
+</body>
+</html>
+

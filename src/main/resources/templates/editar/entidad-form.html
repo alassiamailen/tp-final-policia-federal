@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Editar Entidad Bancaria</h1>
+        
+        <form th:action="@{/editar/entidad-bancaria/{id}(id=${entidad.id})}" th:object="${entidad}" method="post" style="max-width: 500px;">
+            <div style="margin-bottom: 1rem;">
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" th:field="*{codigo}" readonly style="width: 100%; padding: 0.5rem; background-color: #f5f5f5; cursor: not-allowed;">
+                <small style="color: #666; display: block; margin-top: 0.25rem;">El código no se puede modificar.</small>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="domicilio">Domicilio de la Central:</label>
+                <input type="text" id="domicilio" th:field="*{domicilio}" required style="width: 100%; padding: 0.5rem;">
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Actualizar</button>
+                <a th:href="@{/editar/entidad-bancaria}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

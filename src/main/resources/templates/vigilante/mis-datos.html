@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1 style="color: #1a237e;">Mis Datos</h1>
+        
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        
+        <div th:if="${vigilante != null}" class="detail-card">
+            <h2>Información Personal</h2>
+            <div class="info-section">
+                <p><strong>Código:</strong> 
+                    <span th:if="${vigilante.codigo != null}" class="badge badge-success" th:text="${vigilante.codigo}"></span>
+                    <span th:if="${vigilante.codigo == null}" class="badge badge-warning">Sin código asignado</span>
+                </p>
+                <p><strong>Nombre y Apellido:</strong> <span th:text="${vigilante.nombreApellido}"></span></p>
+                <p><strong>Edad:</strong> <span th:text="${vigilante.edad}"></span></p>
+            </div>
+            
+            <h3>📋 Contratos</h3>
+            <div th:if="${!vigilante.contratos.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Sucursal</th>
+                            <th>Código Sucursal</th>
+                            <th>Entidad Bancaria</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Porta Arma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="contrato : ${vigilante.contratos}">
+                            <td th:text="${contrato.sucursal.nombre}"></td>
+                            <td>
+                                <span th:if="${contrato.sucursal.codigo != null}" class="badge badge-info" th:text="${contrato.sucursal.codigo}"></span>
+                                <span th:if="${contrato.sucursal.codigo == null}" class="badge badge-warning">Sin código</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-primary" th:text="${contrato.sucursal.entidadBancaria.nombre}"></span>
+                                <span th:if="${contrato.sucursal.entidadBancaria.codigo != null}" class="badge badge-secondary" th:text="'(' + ${contrato.sucursal.entidadBancaria.codigo} + ')'"></span>
+                            </td>
+                            <td th:text="${#temporals.format(contrato.fechaInicio, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${#temporals.format(contrato.fechaFin, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <span th:if="${contrato.portarArma}" class="badge badge-danger">Sí</span>
+                                <span th:if="${!contrato.portarArma}" class="badge badge-success">No</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${vigilante.contratos.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">No tiene contratos asignados</p>
+            </div>
+        </div>
+        
+        <div th:if="${vigilante == null && error == null}" class="detail-card">
+            <div class="info-section">
+                <p style="color: #666;">Este usuario no tiene un vigilante asociado en el sistema.</p>
+                <p style="color: #666; margin-top: 1rem;">Por favor, contacte al administrador para que asocie un vigilante a su cuenta.</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 1.5rem;">
+            <a th:href="@{/}" class="btn btn-primary">← Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>
+

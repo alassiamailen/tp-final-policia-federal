@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h1 style="color: #1a237e; margin: 0;">Detalle del Asaltante</h1>
+            <div>
+                <a th:if="${puedeEditar}" th:href="@{/editar/asaltante/{id}(id=${asaltante.id})}" class="btn btn-warning">✏️ Editar</a>
+                <a th:href="@{/consultas/asaltantes}" class="btn btn-primary">← Volver</a>
+            </div>
+        </div>
+        
+        <div class="detail-card">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="info-section">
+                    <p><strong>Código:</strong> 
+                        <span th:if="${asaltante.codigo != null}" class="badge badge-danger" th:text="${asaltante.codigo}"></span>
+                        <span th:if="${asaltante.codigo == null}" class="badge badge-warning">Sin código asignado</span>
+                    </p>
+                    <p><strong>Nombre y Apellido:</strong> <span th:text="${asaltante.nombreApellido}"></span></p>
+                    <p><strong>Banda Criminal:</strong> 
+                        <span th:if="${asaltante.bandaCriminal != null}">
+                            <span class="badge badge-warning" th:text="'ID: ' + ${asaltante.bandaCriminal.numeroIdentificacion} + ' (' + ${asaltante.bandaCriminal.cantidadDeMiembros} + ' miembros)'"></span>
+                        </span>
+                        <span th:if="${asaltante.bandaCriminal == null}" class="badge badge-primary">Sin banda asignada</span>
+                    </p>
+                </div>
+            </div>
+            
+            <h3>🔫 Asaltos Registrados</h3>
+            <div th:if="${!asaltante.asaltos.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>ID Asalto</th>
+                            <th>Fecha</th>
+                            <th>Sucursal</th>
+                            <th>Entidad Bancaria</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="asalto : ${asaltante.asaltos}">
+                            <td th:text="${asalto.id}"></td>
+                            <td th:text="${#temporals.format(asalto.fecha, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${asalto.sucursal.nombre}"></td>
+                            <td th:text="${asalto.sucursal.entidadBancaria.nombre}"></td>
+                            <td>
+                                <a th:href="@{/consultas/asaltos/{id}(id=${asalto.id})}" class="btn btn-info btn-sm">Ver Detalle</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${asaltante.asaltos.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">Sin asaltos registrados</p>
+            </div>
+            
+            <h3>⚖️ Condenas</h3>
+            <div th:if="${!asaltante.condenas.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>ID Condena</th>
+                            <th>Tiempo de Condena</th>
+                            <th>Caso Asociado</th>
+                            <th>Juez</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="condena : ${asaltante.condenas}">
+                            <td th:text="${condena.id}"></td>
+                            <td><span class="badge badge-danger" th:text="${condena.tiempoCondena} + ' años'"></span></td>
+                            <td>
+                                <span th:if="${condena.caso != null}" th:text="'Caso #' + ${condena.caso.id}"></span>
+                                <span th:if="${condena.caso == null}">Sin caso</span>
+                            </td>
+                            <td>
+                                <span th:if="${condena.caso != null && condena.caso.juez != null}" th:text="${condena.caso.juez.nombreApellido}"></span>
+                                <span th:if="${condena.caso == null || condena.caso.juez == null}">-</span>
+                            </td>
+                            <td>
+                                <a th:if="${condena.caso != null}" th:href="@{/consultas/casos/{id}(id=${condena.caso.id})}" class="btn btn-info btn-sm">Ver Caso</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${asaltante.condenas.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">Sin condenas registradas</p>
+            </div>
+        </div>
+        
+        <div th:if="${puedeEditar || puedeCargarDetenido || puedeAbrirCaso}" class="action-menu">
+            <h3>🔗 Relacionar con otras entidades</h3>
+            <div class="action-buttons">
+                <a th:if="${puedeCargarDetenido}" th:href="@{/detenidos/cargar}" class="btn btn-success">+ Registrar Nuevo Asalto</a>
+                <a th:if="${puedeAbrirCaso && !asaltante.asaltos.isEmpty()}" th:href="@{/casos/abrir}" class="btn btn-warning">+ Abrir Caso Judicial</a>
+                <a th:if="${puedeEditar}" th:href="@{/crear-entidad/banda-criminal?returnTo=/consultas/asaltantes/{id}(id=${asaltante.id})}" class="btn btn-primary">+ Asignar/Crear Banda Criminal</a>
+                <a th:if="${puedeEditar}" th:href="@{/crear-entidad/asaltante}" class="btn btn-primary">+ Crear Otro Asaltante</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h1 style="color: #1a237e; margin: 0;">Detalle del Juez</h1>
+            <div>
+                <a th:if="${puedeEditar}" th:href="@{/editar/juez/{id}(id=${juez.id})}" class="btn btn-warning">✏️ Editar</a>
+                <a th:href="@{/consultas/jueces}" class="btn btn-primary">← Volver</a>
+            </div>
+        </div>
+        
+        <div class="detail-card">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="info-section">
+                    <p><strong>Clave Interna del Juzgado:</strong> 
+                        <span th:if="${juez.claveInternaJuzgado != null}" class="badge badge-primary" th:text="${juez.claveInternaJuzgado}"></span>
+                        <span th:if="${juez.claveInternaJuzgado == null}" class="badge badge-warning">Sin clave asignada</span>
+                    </p>
+                    <p><strong>Nombre y Apellido:</strong> <span th:text="${juez.nombreApellido}"></span></p>
+                    <p><strong>Años de Servicio:</strong> <span th:text="${juez.aniosDeServicio}"></span></p>
+                </div>
+            </div>
+            
+            <h3>📋 Casos Asignados</h3>
+            <div th:if="${!juez.casosAsignados.isEmpty()}" class="info-section">
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>ID Caso</th>
+                            <th>Asaltante</th>
+                            <th>Tiempo Condena</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="caso : ${juez.casosAsignados}">
+                            <td th:text="${caso.id}"></td>
+                            <td th:text="${caso.condena.asaltante.nombreApellido}"></td>
+                            <td><span class="badge badge-danger" th:text="${caso.condena.tiempoCondena} + ' años'"></span></td>
+                            <td>
+                                <a th:href="@{/consultas/casos/{id}(id=${caso.id})}" class="btn btn-info btn-sm">Ver Caso</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${juez.casosAsignados.isEmpty()}" class="info-section">
+                <p style="color: #666; margin: 0;">Sin casos asignados</p>
+            </div>
+        </div>
+        
+        <div th:if="${puedeAbrirCaso}" class="action-menu">
+            <h3>🔗 Relacionar con otras entidades</h3>
+            <div class="action-buttons">
+                <a th:href="@{/casos/abrir}" class="btn btn-success">+ Asignar Nuevo Caso</a>
+                <a th:href="@{/crear-entidad/juez}" class="btn btn-primary">+ Crear Otro Juez</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

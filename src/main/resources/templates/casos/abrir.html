@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout}">
+<body>
+    <div th:fragment="content">
+        <h1>Abrir Caso Judicial</h1>
+        
+        <form th:action="@{/casos/abrir}" method="post" style="max-width: 500px;">
+            <div style="margin-bottom: 1rem;">
+                <label for="asaltoId">Asalto:</label>
+                <select id="asaltoId" name="asalto.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione un asalto</option>
+                    <option th:each="asalto : ${asaltos}" th:value="${asalto.id}" 
+                            th:text="'Asalto #' + ${asalto.id} + ' - ' + ${asalto.asaltante?.nombreApellido ?: 'Sin asaltante'} + ' - ' + ${#temporals.format(asalto.fecha, 'dd/MM/yyyy')}"></option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="juezId">Juez:</label>
+                <select id="juezId" name="juez.id" required style="width: 100%; padding: 0.5rem;">
+                    <option value="">Seleccione un juez</option>
+                    <option th:each="juez : ${jueces}" th:value="${juez.id}" 
+                            th:text="${(juez.claveInternaJuzgado != null ? juez.claveInternaJuzgado + ' - ' : 'Sin clave - ') + juez.nombreApellido + ' (' + juez.aniosDeServicio + ' años de servicio)'}"></option>
+                </select>
+                <div style="margin-top: 0.5rem;">
+                    <a th:href="@{/crear-entidad/juez?returnTo=/casos/abrir}" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.3rem 0.8rem;">
+                        + Crear Nuevo Juez
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(jueces)}" style="margin-top: 0.5rem; padding: 0.5rem; background-color: #fff3cd; border-radius: 4px; color: #856404;">
+                    <small>No hay jueces registrados. Debe crear uno antes de abrir un caso.</small>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>
+                    <input type="checkbox" id="fueCondenado" name="fueCondenado" value="true" style="margin-right: 0.5rem;">
+                    Fue Condenado
+                </label>
+            </div>
+            
+            <div style="margin-bottom: 1rem; display: none;" id="tiempoCondenaDiv">
+                <label for="tiempoCondena">Tiempo de Condena (años):</label>
+                <input type="number" id="tiempoCondena" name="tiempoCondena" min="1" max="50" style="width: 100%; padding: 0.5rem;">
+                <small style="color: #666;">Máximo 50 años (solo si fue condenado)</small>
+            </div>
+            
+            <script>
+                document.getElementById('fueCondenado').addEventListener('change', function() {
+                    document.getElementById('tiempoCondenaDiv').style.display = this.checked ? 'block' : 'none';
+                    document.getElementById('tiempoCondena').required = this.checked;
+                });
+            </script>
+            
+            <div>
+                <button type="submit" class="btn btn-success">Abrir Caso</button>
+                <a th:href="@{/}" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
